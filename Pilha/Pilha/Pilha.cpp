@@ -8,12 +8,14 @@ struct NO {
 };
 
 NO* topo = NULL;
+NO* prox = NULL;
 
 // headers
 void menu();
 void inicializar();
 void pop();
 void push();
+void exibirElementos();
 //--------------------------
 
 
@@ -25,14 +27,15 @@ int main()
 void menu()
 {
 	int op = 0;
-	while (op != 4) {
+	while (op != 5) {
 		system("cls"); // somente no windows
 		cout << "Menu Pilha";
 		cout << endl << endl;
 		cout << "1 - Inicializar Pilha \n";
-		cout << "2 - Inserir elemento (Push) \n";
-		cout << "3 - Remover elementos (Pop) \n";
-		cout << "4 - Sair \n";
+		cout << "2 - Exibir Elemento \n";
+		cout << "3 - Inserir elemento (Push) \n";
+		cout << "4 - Remover elementos (Pop) \n";
+		cout << "5 - Sair \n";
 
 
 		cout << "Opcao: ";
@@ -42,11 +45,13 @@ void menu()
 		{
 		case 1: inicializar();
 			break;
-		case 2:push();
+		case 2: exibirElementos();
 			break;
-		case 3: pop();
+		case 3: push();
 			break;
-		case 4:
+		case 4: pop();
+			break;
+		case 5:
 			return;
 		default:
 			break;
@@ -59,7 +64,7 @@ void menu()
 void inicializar()
 {
 
-	// se a lista já possuir elementos
+	// se a lista jÃ¡ possuir elementos
 	// libera a memoria ocupada
 	NO* aux = topo;
 	while (aux != NULL) {
@@ -73,9 +78,27 @@ void inicializar()
 
 }
 
+void exibirElementos()
+{
+	if (topo == NULL) {
+		cout << "Lista vazia \n";
+		return;
+	}
+	else {
+		cout << "Elementos: \n";
+		NO* aux = topo;
+		while (aux != NULL) {
+			cout << aux->valor << endl;
+			aux = aux->prox;
+		}
+	}
+}
+
 
 void push()
 {
+	
+
 	// aloca memoria dinamicamente para o novo elemento
 	NO* novo = (NO*)malloc(sizeof(NO));
 	if (novo == NULL)
@@ -85,15 +108,18 @@ void push()
 
 	cout << "Digite o elemento: ";
 	cin >> novo->valor;
-	novo->prox = NULL;
-
-
+	novo->prox = topo;
+	topo = novo;
 }
 
-void pop()
-{
-
-	
-
-}
-
+	void pop()
+	{
+		if (topo == NULL) {
+			cout << "Lista vazia.\n";
+			return;
+		}
+		cout << "Excluido o elemento: " << topo->valor;
+			NO* paraExcluir = topo;
+			topo = topo->prox;
+			free(paraExcluir);
+	}
